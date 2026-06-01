@@ -718,12 +718,20 @@
       .catch(function (e) { toast("Could not save the document"); console.error(e); });
   }
 
-  /* Print uses the browser print pipeline; the @media print stylesheet hides
-     all chrome so only the page prints (and OS "Save as PDF" is WYSIWYG).
-     Works the same in the desktop webview and a plain browser. */
+  /* Print. The @media print stylesheet hides all chrome so only the page
+     prints (and the OS "Save as PDF" destination is WYSIWYG). In the desktop
+     app we must trigger the NATIVE webview print from Rust — macOS WKWebView
+     silently ignores JavaScript window.print(). In a plain browser we use
+     window.print() directly. */
   function doPrint() {
     try { editor.blur(); } catch (e) { /* ignore */ }
-    window.print();
+    if (HAS_TAURI) {
+      invoke("print").catch(function () {
+        try { window.print(); } catch (e) { /* ignore */ }
+      });
+    } else {
+      window.print();
+    }
   }
 
   function loadDoc(doc, path) {

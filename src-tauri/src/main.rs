@@ -25,6 +25,15 @@ fn document_stats(doc: Document) -> Stats {
     ferric_core::stats(&doc)
 }
 
+/// Open the native print dialog for the document. The front-end calls this
+/// instead of JavaScript `window.print()`, which macOS's WKWebView ignores;
+/// the webview's own print path respects the `@media print` stylesheet and
+/// offers "Save as PDF" as a destination.
+#[tauri::command]
+fn print(window: tauri::WebviewWindow) -> Result<(), String> {
+    window.print().map_err(|e| e.to_string())
+}
+
 #[derive(Serialize)]
 struct Opened {
     path: String,
@@ -117,7 +126,8 @@ fn main() {
             new_document,
             document_stats,
             open_document,
-            save_document
+            save_document,
+            print
         ])
         .run(tauri::generate_context!())
         .expect("error while running ferric");
