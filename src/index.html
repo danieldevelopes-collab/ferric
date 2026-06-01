@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ferric</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ============================ RIBBON / TOOLBAR ============================ -->
+  <header class="ribbon" role="toolbar" aria-label="Formatting toolbar">
+
+    <!-- File actions -->
+    <div class="ribbon-group" aria-label="File">
+      <button type="button" class="tool-btn" id="btn-new" title="New document" aria-label="New document">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+          <path d="M14 3v5h5" />
+        </svg>
+        <span class="tool-label">New</span>
+      </button>
+      <button type="button" class="tool-btn" id="btn-open" title="Open document (Ctrl/Cmd+O)" aria-label="Open document">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        </svg>
+        <span class="tool-label">Open</span>
+      </button>
+      <button type="button" class="tool-btn" id="btn-save" title="Save (Ctrl/Cmd+S)" aria-label="Save document">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+          <path d="M8 3v6h7V3" />
+          <path d="M8 14h8v7H8z" />
+        </svg>
+        <span class="tool-label">Save</span>
+      </button>
+
+      <!-- Save as dropdown -->
+      <div class="menu" id="menu-saveas">
+        <button type="button" class="tool-btn has-caret" id="btn-saveas" title="Save as…"
+                aria-label="Save as" aria-haspopup="true" aria-expanded="false">
+          <span class="tool-label">Save as</span>
+          <svg class="caret" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" /></svg>
+        </button>
+        <div class="menu-list" id="saveas-list" role="menu" aria-label="Save as format" hidden>
+          <button type="button" class="menu-item" role="menuitem" data-format="markdown">Markdown (.md)</button>
+          <button type="button" class="menu-item" role="menuitem" data-format="rtf">Rich Text (.rtf)</button>
+          <button type="button" class="menu-item" role="menuitem" data-format="docx">Word (.docx)</button>
+          <button type="button" class="menu-item" role="menuitem" data-format="txt">Plain text (.txt)</button>
+          <button type="button" class="menu-item" role="menuitem" data-format="json">Document JSON (.json)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ribbon-sep" role="separator"></div>
+
+    <!-- Paragraph style -->
+    <div class="ribbon-group" aria-label="Paragraph style">
+      <label class="sr-only" for="style-select">Paragraph style</label>
+      <select id="style-select" class="style-select" title="Paragraph style">
+        <option value="p">Normal</option>
+        <option value="h1">Heading 1</option>
+        <option value="h2">Heading 2</option>
+        <option value="h3">Heading 3</option>
+        <option value="blockquote">Quote</option>
+        <option value="pre">Code block</option>
+      </select>
+    </div>
+
+    <div class="ribbon-sep" role="separator"></div>
+
+    <!-- Inline formatting -->
+    <div class="ribbon-group" aria-label="Text formatting">
+      <button type="button" class="tool-btn icon-only" id="btn-bold" data-cmd="bold"
+              title="Bold (Ctrl/Cmd+B)" aria-label="Bold" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M7 5h6a3.5 3.5 0 0 1 0 7H7z" />
+          <path d="M7 12h7a3.5 3.5 0 0 1 0 7H7z" />
+        </svg>
+      </button>
+      <button type="button" class="tool-btn icon-only" id="btn-italic" data-cmd="italic"
+              title="Italic (Ctrl/Cmd+I)" aria-label="Italic" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M19 5h-6M11 19H5M15 5L9 19" />
+        </svg>
+      </button>
+      <button type="button" class="tool-btn icon-only" id="btn-underline" data-cmd="underline"
+              title="Underline (Ctrl/Cmd+U)" aria-label="Underline" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M7 4v6a5 5 0 0 0 10 0V4" />
+          <path d="M5 20h14" />
+        </svg>
+      </button>
+      <button type="button" class="tool-btn icon-only" id="btn-strike" data-cmd="strikeThrough"
+              title="Strikethrough" aria-label="Strikethrough" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4 12h16" />
+          <path d="M7 7a4 3 0 0 1 4-3h2a4 3 0 0 1 4 3" />
+          <path d="M7 16a4 3 0 0 0 4 3h2a4 3 0 0 0 4-3" />
+        </svg>
+      </button>
+      <button type="button" class="tool-btn icon-only" id="btn-code" data-cmd="code"
+              title="Inline code" aria-label="Inline code" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M9 8l-5 4 5 4" />
+          <path d="M15 8l5 4-5 4" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="ribbon-sep" role="separator"></div>
+
+    <!-- Lists -->
+    <div class="ribbon-group" aria-label="Lists">
+      <button type="button" class="tool-btn icon-only" id="btn-ul" data-cmd="insertUnorderedList"
+              title="Bulleted list" aria-label="Bulleted list" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="5" cy="7" r="1.4" /><circle cx="5" cy="12" r="1.4" /><circle cx="5" cy="17" r="1.4" />
+          <path d="M9 7h11M9 12h11M9 17h11" />
+        </svg>
+      </button>
+      <button type="button" class="tool-btn icon-only" id="btn-ol" data-cmd="insertOrderedList"
+              title="Numbered list" aria-label="Numbered list" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M9 7h11M9 12h11M9 17h11" />
+          <text x="3" y="8.5" class="num">1</text>
+          <text x="3" y="13.5" class="num">2</text>
+          <text x="3" y="18.5" class="num">3</text>
+        </svg>
+      </button>
+    </div>
+
+    <div class="ribbon-sep" role="separator"></div>
+
+    <!-- Alignment -->
+    <div class="ribbon-group" aria-label="Alignment">
+      <button type="button" class="tool-btn icon-only" id="btn-align-left" data-cmd="justifyLeft"
+              title="Align left" aria-label="Align left" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4 6h16M4 10h10M4 14h16M4 18h10" />
+        </svg>
+      </button>
+      <button type="button" class="tool-btn icon-only" id="btn-align-center" data-cmd="justifyCenter"
+              title="Align center" aria-label="Align center" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4 6h16M7 10h10M4 14h16M7 18h10" />
+        </svg>
+      </button>
+      <button type="button" class="tool-btn icon-only" id="btn-align-right" data-cmd="justifyRight"
+              title="Align right" aria-label="Align right" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4 6h16M10 10h10M4 14h16M10 18h10" />
+        </svg>
+      </button>
+      <button type="button" class="tool-btn icon-only" id="btn-align-justify" data-cmd="justifyFull"
+              title="Justify" aria-label="Justify" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================ CANVAS / PAGE ============================ -->
+  <main class="canvas" id="canvas">
+    <div class="page-wrap">
+      <article id="editor" class="page" contenteditable="true" spellcheck="true"
+               role="textbox" aria-multiline="true" aria-label="Document body">
+        <!-- Document is rendered here by app.js -->
+      </article>
+    </div>
+  </main>
+
+  <!-- ============================ STATUS BAR ============================ -->
+  <footer class="statusbar" aria-label="Document status">
+    <div class="status-left">
+      <span class="status-item"><strong id="stat-words">0</strong>&nbsp;words</span>
+      <span class="status-dot" aria-hidden="true">·</span>
+      <span class="status-item"><strong id="stat-chars">0</strong>&nbsp;characters</span>
+      <span class="status-dot" aria-hidden="true">·</span>
+      <span class="status-item" id="stat-reading">0 sec read</span>
+    </div>
+    <div class="status-right">
+      <span class="save-indicator is-clean" id="save-indicator" aria-live="polite">
+        <span class="save-pip" aria-hidden="true"></span>
+        <span id="save-text">Saved</span>
+      </span>
+    </div>
+  </footer>
+
+  <!-- Toast region -->
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
