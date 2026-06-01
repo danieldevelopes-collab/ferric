@@ -54,9 +54,10 @@ fn build_para(p: &Paragraph) -> DxPara {
     para
 }
 
-fn build_run(run: &Run, size: Option<usize>, heading_bold: bool, style: BlockStyle) -> DxRun {
+fn build_run(run: &Run, heading_size: Option<usize>, heading_bold: bool, style: BlockStyle) -> DxRun {
     let mut r = DxRun::new().add_text(&run.text);
-    if let Some(sz) = size {
+    // size: a heading's size wins; otherwise a per-run size (points -> half-points)
+    if let Some(sz) = heading_size.or_else(|| run.size.map(|s| s as usize * 2)) {
         r = r.size(sz);
     }
     if run.bold || heading_bold {
@@ -71,7 +72,10 @@ fn build_run(run: &Run, size: Option<usize>, heading_bold: bool, style: BlockSty
     if run.strike {
         r = r.strike();
     }
-    if run.code || matches!(style, BlockStyle::Code) {
+    let code = run.code || matches!(style, BlockStyle::Code);
+    if let Some(font) = &run.font {
+        r = r.fonts(RunFonts::new().ascii(font).hi_ansi(font));
+    } else if code {
         r = r.fonts(RunFonts::new().ascii("Menlo").hi_ansi("Menlo"));
     }
     r

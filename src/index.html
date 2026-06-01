@@ -45,10 +45,21 @@
           <button type="button" class="menu-item" role="menuitem" data-format="markdown">Markdown (.md)</button>
           <button type="button" class="menu-item" role="menuitem" data-format="rtf">Rich Text (.rtf)</button>
           <button type="button" class="menu-item" role="menuitem" data-format="docx">Word (.docx)</button>
+          <button type="button" class="menu-item" role="menuitem" data-format="pdf">PDF (.pdf)</button>
+          <button type="button" class="menu-item" role="menuitem" data-format="odt">OpenDocument (.odt)</button>
           <button type="button" class="menu-item" role="menuitem" data-format="txt">Plain text (.txt)</button>
           <button type="button" class="menu-item" role="menuitem" data-format="json">Document JSON (.json)</button>
         </div>
       </div>
+
+      <button type="button" class="tool-btn" id="btn-print" title="Print (Ctrl/Cmd+P)" aria-label="Print document">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M6 9V3h12v6" />
+          <path d="M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2" />
+          <path d="M6 14h12v7H6z" />
+        </svg>
+        <span class="tool-label">Print</span>
+      </button>
     </div>
 
     <div class="ribbon-sep" role="separator"></div>
@@ -63,6 +74,34 @@
         <option value="h3">Heading 3</option>
         <option value="blockquote">Quote</option>
         <option value="pre">Code block</option>
+      </select>
+    </div>
+
+    <div class="ribbon-sep" role="separator"></div>
+
+    <!-- Font family + size -->
+    <div class="ribbon-group" aria-label="Font">
+      <label class="sr-only" for="font-select">Font family</label>
+      <select id="font-select" class="font-select" title="Font family">
+        <option value="">Default</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Helvetica">Helvetica</option>
+        <option value="Arial">Arial</option>
+        <option value="Courier New">Courier New</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Garamond">Garamond</option>
+      </select>
+      <label class="sr-only" for="size-select">Font size</label>
+      <select id="size-select" class="size-select" title="Font size">
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="14">14</option>
+        <option value="16">16</option>
+        <option value="18">18</option>
+        <option value="24">24</option>
+        <option value="36">36</option>
       </select>
     </div>
 

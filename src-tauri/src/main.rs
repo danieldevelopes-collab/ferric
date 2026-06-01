@@ -80,6 +80,8 @@ fn save_document(
         "markdown" => Format::Markdown,
         "rtf" => Format::Rtf,
         "docx" => Format::Docx,
+        "odt" => Format::Odt,
+        "pdf" => Format::Pdf,
         "txt" => Format::Txt,
         "json" => Format::Json,
         other => return Err(format!("unknown format: {other}")),

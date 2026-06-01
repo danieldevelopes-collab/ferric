@@ -199,8 +199,10 @@ body {
 }
 .menu-item:hover { background: var(--accent-soft); color: var(--btn-active-fg); }
 
-/* Paragraph-style dropdown */
-.style-select {
+/* Paragraph-style + font dropdowns */
+.style-select,
+.font-select,
+.size-select {
   height: 34px;
   min-width: 138px;
   padding: 0 30px 0 10px;
@@ -219,6 +221,14 @@ body {
   background-repeat: no-repeat;
   background-position: right 8px center;
   background-size: 16px;
+}
+
+.font-select { min-width: 150px; }
+.size-select { min-width: 72px; }
+.size-select:focus-visible,
+.font-select:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
 
 /* ============================ CANVAS / PAGE ============================ */
@@ -368,4 +378,46 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .tool-btn, .toast, .save-indicator { transition: none; }
+}
+
+/* ============================ PRINT ============================ */
+/* Only the document prints: chrome is hidden and the page fills the sheet
+   with normal paper colour, so print / "Save as PDF" is clean and WYSIWYG. */
+@media print {
+  .ribbon,
+  .statusbar,
+  .toast-region,
+  .menu-list {
+    display: none !important;
+  }
+
+  html, body {
+    height: auto;
+    background: #fff;
+    color: #000;
+  }
+
+  .canvas {
+    flex: none;
+    overflow: visible;
+    padding: 0;
+    background: #fff;
+  }
+
+  .page-wrap {
+    max-width: none;
+    margin: 0;
+  }
+
+  .page {
+    background: #fff;
+    color: var(--page-text);
+    box-shadow: none;
+    border: 0;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    min-height: 0;
+    width: 100%;
+  }
 }

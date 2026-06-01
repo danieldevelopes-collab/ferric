@@ -10,12 +10,16 @@
 pub mod docx;
 pub mod markdown;
 pub mod model;
+pub mod odt;
+pub mod pdf;
 pub mod rtf;
 pub mod stats;
 
 pub use docx::to_docx;
 pub use markdown::{parse_markdown, to_markdown};
 pub use model::{Align, BlockStyle, Document, Paragraph, Run};
+pub use odt::to_odt;
+pub use pdf::to_pdf;
 pub use rtf::to_rtf;
 pub use stats::{stats, Stats};
 
@@ -25,6 +29,8 @@ pub enum Format {
     Markdown,
     Rtf,
     Docx,
+    Odt,
+    Pdf,
     Txt,
     Json,
 }
@@ -37,6 +43,8 @@ impl Format {
             "md" | "markdown" | "mkd" => Some(Format::Markdown),
             "rtf" => Some(Format::Rtf),
             "docx" => Some(Format::Docx),
+            "odt" => Some(Format::Odt),
+            "pdf" => Some(Format::Pdf),
             "txt" | "text" => Some(Format::Txt),
             "json" | "ferric" => Some(Format::Json),
             _ => None,
@@ -47,6 +55,8 @@ impl Format {
             Format::Markdown => "md",
             Format::Rtf => "rtf",
             Format::Docx => "docx",
+            Format::Odt => "odt",
+            Format::Pdf => "pdf",
             Format::Txt => "txt",
             Format::Json => "json",
         }
@@ -64,6 +74,8 @@ pub fn to_bytes(doc: &Document, fmt: Format) -> Result<Vec<u8>, String> {
         Format::Markdown => to_markdown(doc).into_bytes(),
         Format::Rtf => to_rtf(doc).into_bytes(),
         Format::Docx => to_docx(doc)?,
+        Format::Odt => to_odt(doc)?,
+        Format::Pdf => to_pdf(doc)?,
         Format::Txt => doc.plain_text().into_bytes(),
         Format::Json => serde_json::to_vec_pretty(doc).map_err(|e| e.to_string())?,
     })
@@ -78,6 +90,8 @@ pub fn from_bytes(data: &[u8], fmt: Format) -> Result<Document, String> {
         Format::Json => serde_json::from_slice(data).map_err(|e| e.to_string()),
         Format::Rtf => Err("importing RTF is not supported yet".into()),
         Format::Docx => Err("importing .docx is not supported yet".into()),
+        Format::Odt => Err("importing .odt is not supported yet".into()),
+        Format::Pdf => Err("PDF is an export-only format".into()),
     }
 }
 
@@ -208,6 +222,42 @@ mod tests {
         let bytes = to_docx(&sample()).unwrap();
         assert!(bytes.len() > 100);
         assert_eq!(&bytes[0..2], b"PK"); // .docx is a zip archive
+    }
+
+    #[test]
+    fn pdf_is_a_pdf() {
+        let bytes = to_bytes(&sample(), Format::Pdf).unwrap();
+        assert!(bytes.len() > 200);
+        assert_eq!(&bytes[0..5], b"%PDF-"); // real PDF header
+    }
+
+    #[test]
+    fn odt_is_opendocument() {
+        let bytes = to_bytes(&sample(), Format::Odt).unwrap();
+        assert_eq!(&bytes[0..2], b"PK"); // .odt is a zip archive
+        // the mimetype is stored uncompressed, so it appears verbatim in the zip
+        let needle = b"application/vnd.oasis.opendocument.text";
+        assert!(bytes.windows(needle.len()).any(|w| w == needle));
+    }
+
+    #[test]
+    fn font_and_size_round_trip_and_export() {
+        let mut d = Document::new();
+        let mut p = Paragraph::new(BlockStyle::Normal);
+        let mut r = Run::new("styled");
+        r.font = Some("Georgia".into());
+        r.size = Some(18);
+        p.push(r);
+        d.push(p);
+        // survive JSON exactly
+        let back = from_bytes(&to_bytes(&d, Format::Json).unwrap(), Format::Json).unwrap();
+        assert_eq!(d, back);
+        assert_eq!(back.paragraphs[0].runs[0].font.as_deref(), Some("Georgia"));
+        assert_eq!(back.paragraphs[0].runs[0].size, Some(18));
+        // and export cleanly to every binary format
+        for fmt in [Format::Docx, Format::Pdf, Format::Odt, Format::Rtf] {
+            assert!(to_bytes(&d, fmt).is_ok(), "export to {fmt:?} failed");
+        }
     }
 
     #[test]

@@ -28,6 +28,12 @@ pub struct Run {
     pub strike: bool,
     #[serde(default, skip_serializing_if = "is_false")]
     pub code: bool,
+    /// Optional font family name (e.g. "Georgia"). `None` = the document default.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub font: Option<String>,
+    /// Optional font size in points. `None` = the document default.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub size: Option<u16>,
 }
 
 impl Run {

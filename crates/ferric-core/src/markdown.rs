@@ -131,6 +131,7 @@ fn push_run(p: &mut Paragraph, text: &str, b: bool, i: bool, u: bool, s: bool, c
     p.runs.push(Run {
         text: text.to_string(),
         bold: b, italic: i, underline: u, strike: s, code: c,
+        ..Default::default()
     });
 }
 

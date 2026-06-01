@@ -57,6 +57,9 @@ fn push_run(s: &mut String, run: &Run, force_bold: bool, force_mono: bool) {
     if mono {
         s.push_str("\\f1 ");
     }
+    if let Some(sz) = run.size {
+        s.push_str(&format!("\\fs{} ", (sz as u32) * 2)); // RTF size is half-points
+    }
     if run.bold || force_bold {
         s.push_str("\\b ");
     }
