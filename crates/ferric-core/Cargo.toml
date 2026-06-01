@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 license = "MIT"
 description = "The document engine behind ferric: a formatted-text model and conversions to/from Markdown, RTF, .docx, plain text and JSON."
-authors = ["Daniel Bratcher"]
+authors = ["Daniel Bracher"]
 
 [lib]
 name = "ferric_core"

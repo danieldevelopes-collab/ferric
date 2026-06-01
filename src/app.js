@@ -1,5 +1,5 @@
 /* ferric — front-end logic
-   Daniel Bratcher
+   Daniel Bracher
    Maps the JSON document model to an editable page and back, drives the
    toolbar, tracks the dirty flag, and talks to the Rust backend over Tauri
    when present (with a full in-browser fallback when it is not). */

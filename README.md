@@ -7,7 +7,7 @@
 > and a paginated **PDF**. The page you type on is glass; the machinery
 > underneath is iron — it is written in **Rust**.
 
-**By Daniel Bratcher · [@danieldevelopes-collab](https://github.com/danieldevelopes-collab)**
+**By Daniel Bracher · [@danieldevelopes-collab](https://github.com/danieldevelopes-collab)**
 · MIT licensed · Rust + Tauri · cross-platform desktop app
 
 ![The ferric word processor — a Word-style ribbon with font controls over a paper page](docs/ui.png)
@@ -278,4 +278,4 @@ editor is painted with.
 
 ## License
 
-[MIT](LICENSE) © 2026 Daniel Bratcher (danieldevelopes-collab).
+[MIT](LICENSE) © 2026 Daniel Bracher (danieldevelopes-collab).
